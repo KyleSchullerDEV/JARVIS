@@ -1,0 +1,59 @@
+{
+  "name": "jarvis",
+  "productName": "jarvis",
+  "version": "0.0.1",
+  "description": "Control your computer with AI",
+  "keywords": [],
+  "author": {
+    "name": "Kyle Schuller DEV",
+    "email": "me@kyleschuller.dev"
+  },
+  "main": ".vite/build/main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint --ext .ts,.tsx ."
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron-forge/plugin-vite": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "autoprefixer": "^10.4.20",
+    "electron": "32.0.2",
+    "eslint": "^8.0.1",
+    "eslint-plugin-import": "^2.25.0",
+    "postcss": "^8.4.45",
+    "tailwindcss": "^3.4.10",
+    "ts-node": "^10.0.0",
+    "typescript": "~4.5.4",
+    "vite": "^5.0.12"
+  },
+  "license": "MIT",
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447",
+  "dependencies": {
+    "@ai-sdk/openai": "^0.0.58",
+    "@fastify/cors": "^9.0.1",
+    "@phosphor-icons/react": "^2.1.7",
+    "ai": "^3.3.29",
+    "dotenv": "^16.4.5",
+    "electron-squirrel-startup": "^1.0.1",
+    "fastify": "^4.28.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "systeminformation": "^5.23.5",
+    "tailwind-merge": "^2.5.2",
+    "zod": "^3.23.8"
+  }
+}
