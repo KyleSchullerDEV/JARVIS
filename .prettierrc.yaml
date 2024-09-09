@@ -1,0 +1,165 @@
+experimentalTernaries: true
+
+tabWidth: 2
+useTabs: false
+semi: true
+singleQuote: true
+jsxSingleQuote: true
+trailingComma: 'es5'
+bracketSpacing: true
+bracketSameLine: false
+arrowParens: 'always'
+endOfLine: 'lf'
+
+# Prevent forced wrapping to let the IDE handle it
+# printWidth: 9999
+# proseWrap: 'never'
+# singleAttributePerLine: false
+
+# Tailwind CSS stuff
+plugins:
+  - 'prettier-plugin-tailwindcss'
+
+tailwindConfig: './tailwind.config.js'
+tailwindFunctions:
+  - clsx
+  - twMerge
+
+tailwindClassesOrder:
+  - relative
+  - absolute
+  - flex
+  - flex-col
+  - flex-row
+  - grid
+  - grid-cols
+  - gap
+  - p
+  - m
+  - w
+  - h
+  - min-w
+  - min-h
+  - max-w
+  - max-h
+  - text
+  - font
+  - bg
+  - border
+  - rounded
+  - shadow
+  - outline
+  - opacity
+  - transition
+  - transform
+  - animate
+  - cursor
+  - z
+  - sr
+  - float
+  - clear
+  - table
+  - container
+  - box
+  - block
+  - inline
+  - contents
+  - hidden
+  - overflow
+  - underline
+  - list
+  - align
+  - whitespace
+  - object
+  - order
+  - placeholder
+  - inset
+  - overscroll
+  - scroll
+  - justify
+  - content
+  - items
+  - self
+  - visible
+  - pointer-events
+  - select
+  - resize
+  - user
+  - backdrop
+  - break
+  - col
+  - row
+  - will-change
+  - stroke
+  - fill
+  - aspect
+  - touch
+  - snap
+  - filter
+  - isolation
+  - mix
+  - origin
+  - accent
+  - appearance
+  - caret
+  - divide
+  - ring
+  - grayscale
+  - hue
+  - invert
+  - saturate
+  - sepia
+  - drop-shadow
+  - blur
+  - brightness
+  - contrast
+  - scale
+  - skew
+  - translate
+  - rotate
+  - from
+  - to
+  - via
+  - hover
+  - focus
+  - focus-within
+  - focus-visible
+  - active
+  - visited
+  - target
+  - first
+  - last
+  - only
+  - odd
+  - even
+  - first-of-type
+  - last-of-type
+  - only-of-type
+  - empty
+  - disabled
+  - enabled
+  - checked
+  - indeterminate
+  - default
+  - required
+  - valid
+  - invalid
+  - in-range
+  - out-of-range
+  - placeholder-shown
+  - autofill
+  - read-only
+  - before
+  - after
+  - first-letter
+  - first-line
+  - marker
+  - selection
+  - file
+  - backdrop
+  - data-*
+  - group-hover
+  - group-focus
+  - peer-hover
+  - peer-focus
+  - dark

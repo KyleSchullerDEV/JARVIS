@@ -1,47 +1,23 @@
-import Fastify, { FastifyInstance } from "fastify";
-import cors from "@fastify/cors";
-import { openai } from "@ai-sdk/openai";
-import { convertToCoreMessages, streamText, StreamData } from "ai";
-import { getSystemInfo } from "./systemInfo";
-import { tools } from "./tools";
-import path from "path";
-import { app } from "electron";
-import dotenv from "dotenv";
+import Fastify, { FastifyInstance } from 'fastify';
+import cors from '@fastify/cors';
+import { openai } from '@ai-sdk/openai';
+import { convertToCoreMessages, streamText, StreamData } from 'ai';
+import { getSystemPrompt } from './getSystemPrompt';
+import { readFromFile, writeToFile, executeCommand } from './tools';
+import path from 'path';
+import { app } from 'electron';
+import dotenv from 'dotenv';
 
-dotenv.config({ path: path.join(__dirname, "../../.env") });
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 if (!process.env.OPENAI_API_KEY) {
-  console.error("OPENAI_API_KEY is not set in the environment variables");
+  console.error('OPENAI_API_KEY is not set in the environment variables');
   app.quit();
 }
 
-const getSystemPrompt = (): string => {
-  const { osName, platform, homedir, desktopPath, documentsPath } = getSystemInfo();
-  const currentDateTime = new Date().toLocaleString();
-
-  return `
-<<<SESSION_CONTEXT>>>
-Current date: ${currentDateTime}
-
-System Information:
-- OS: ${osName}
-- Platform: ${platform}
-- Home Directory: ${homedir}
-- Desktop Path: ${desktopPath}
-- Documents Path: ${documentsPath}
-
-// Consider this info when executing commands (e.g., 'dir' for Windows, 'ls' for macOS/Linux)
-<<</SESSION_CONTEXT>>>
-
-I am JARVIS, an AI copilot resident in an Electron desktop app on the user's machine.
-
-I plan my actions, execute them step-by-step and keep the user in the loop between long running tasks. I will be resilient, adapting my stragegies based on the tool results to ensure the user's goals are met.
-
-After complex tasks I will self reflect on my tool use and response, recusrively correcting discrepancies and recovering from mistakes.
-`;
-};
-
-export function createHttpServer(onServerStarted: (port: number) => void): FastifyInstance {
+export function createHttpServer(
+  onServerStarted: (port: number) => void
+): FastifyInstance {
   const fastify = Fastify({
     logger: true,
   });
@@ -50,17 +26,20 @@ export function createHttpServer(onServerStarted: (port: number) => void): Fasti
     origin: true,
   });
 
-  fastify.post("/api/chat", async (request, reply) => {
+  fastify.post('/api/chat', async (request, reply) => {
     try {
-      const { messages, attachments } = request.body as { messages: any[]; attachments?: any[] };
+      const { messages, attachments } = request.body as {
+        messages: any[];
+        attachments?: any[];
+      };
 
       const data = new StreamData();
 
       const result = await streamText({
-        model: openai("gpt-4o"),
+        model: openai(process.env.OPENAI_API_MODEL || 'gpt-4o'),
         system: getSystemPrompt(),
         messages: convertToCoreMessages(messages),
-        tools,
+        tools: [readFromFile, writeToFile, executeCommand],
         maxToolRoundtrips: 20,
         experimental_toolCallStreaming: true,
         temperature: 0.7,
@@ -68,31 +47,34 @@ export function createHttpServer(onServerStarted: (port: number) => void): Fasti
         attachments,
         onToolCall: async ({ toolCall }) => {
           try {
-            data.append({ type: "toolCall", value: toolCall });
+            data.append({ type: 'toolCall', value: toolCall });
           } catch (error) {
-            console.error("Error in onToolCall:", error);
+            console.error('Error in onToolCall:', error);
           }
         },
         onFinish: ({ usage }) => {
           try {
-            data.append({ type: "usage", value: usage });
+            data.append({ type: 'usage', value: usage });
             data.close();
           } catch (error) {
-            console.error("Error in onFinish:", error);
+            console.error('Error in onFinish:', error);
           }
         },
       });
 
-      return result.toDataStreamResponse({ 
+      return result.toDataStreamResponse({
         data,
         getErrorMessage: (error) => {
-          console.error("Stream error:", error);
+          console.error('Stream error:', error);
           return error instanceof Error ? error.message : String(error);
-        }
+        },
       });
     } catch (error) {
-      console.error("Error in /api/chat:", error);
-      reply.status(500).send({ error: "An error occurred while processing your request.", details: error instanceof Error ? error.message : String(error) });
+      console.error('Error in /api/chat:', error);
+      reply.status(500).send({
+        error: 'An error occurred while processing your request.',
+        details: error instanceof Error ? error.message : String(error),
+      });
     }
   });
 
