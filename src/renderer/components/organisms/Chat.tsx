@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-
 import { useChat } from 'ai/react';
-
-import { PaperPlaneTilt, Stop } from '@phosphor-icons/react';
-
+import {
+  ArrowFatLinesDown,
+  ArrowFatLinesUp,
+  PaperPlaneTilt,
+  Stop,
+} from '@phosphor-icons/react';
 import { Message } from '../molecules/Message';
 
 declare global {
@@ -81,23 +83,33 @@ function Chat() {
   }
 
   return (
-    <div className='flex h-screen flex-col bg-slate-900 text-white'>
-      <div ref={chatContainerRef} className='flex-grow overflow-auto p-4'>
-        {error && (
-          <div className='mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700'>
-            {error}
-          </div>
-        )}
+    <div className='flex h-screen w-screen flex-col'>
+      {error && (
+        <div className='mb-4 rounded-lg border border-current px-4 py-2 text-red-500'>
+          {error}
+        </div>
+      )}
+
+      <div
+        ref={chatContainerRef}
+        className='flex flex-grow flex-col overflow-auto p-4'
+      >
         {messages.map((m) => (
           <Message key={m.id} message={m} />
         ))}
       </div>
 
       {latestMetadata && (
-        <div className='mx-4 mb-2 flex gap-2 rounded-md border-gray-200 bg-white/10 p-2 text-sm leading-none'>
-          <span>totalTokens: {latestMetadata.value.totalTokens}</span>
-          <span>promptTokens: {latestMetadata.value.promptTokens}</span>
-          <span>completionTokens: {latestMetadata.value.completionTokens}</span>
+        <div className='mx-4 mb-2 flex gap-4 rounded-lg bg-white/10 p-2 text-sm leading-none'>
+          {/* <span>totalTokens: {latestMetadata.value.totalTokens}</span> */}
+          <div className='flex items-center gap-2'>
+            <ArrowFatLinesUp weight='bold' className='text-[1.25em]' />{' '}
+            {latestMetadata.value.promptTokens}
+          </div>
+          <div className='flex items-center gap-2'>
+            <ArrowFatLinesDown weight='bold' className='text-[1.25em]' />{' '}
+            {latestMetadata.value.completionTokens}
+          </div>
         </div>
       )}
 
@@ -106,7 +118,7 @@ function Chat() {
         className='mx-4 mb-4 grid gap-2 [grid-template-columns:1fr_min-content]'
       >
         <input
-          className='flex-grow rounded border bg-transparent p-2'
+          className='flex-grow rounded-lg border bg-transparent p-2'
           value={input}
           placeholder='Message&hellip;'
           onChange={handleInputChange}
@@ -116,16 +128,18 @@ function Chat() {
           <button
             type='button'
             onClick={stop}
-            className='grid aspect-square place-content-center rounded bg-red-500 p-2 text-white'
+            className='grid aspect-square place-content-center rounded-lg bg-red-500 p-2 text-white'
           >
-            <Stop weight='bold' className='text-[1.25em]' /> <span className='sr-only'>Stop</span>
+            <Stop weight='bold' className='text-[1.25em]' />{' '}
+            <span className='sr-only'>Stop</span>
           </button>
         : <button
             type='submit'
-            className='grid aspect-square place-content-center rounded bg-blue-500 p-2 text-white disabled:bg-blue-300'
+            className='grid aspect-square place-content-center rounded-lg bg-blue-500 p-2 text-white disabled:bg-blue-300'
             disabled={isLoading}
           >
-            <PaperPlaneTilt weight='bold' className='text-[1.25em]' /> <span className='sr-only'>Send</span>
+            <PaperPlaneTilt weight='bold' className='text-[1.25em]' />{' '}
+            <span className='sr-only'>Send</span>
           </button>
         }
       </form>

@@ -1,39 +1,33 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
-import { ToolInvocation } from './ToolInvocation';
+import { ToolInvocation } from '../atoms/ToolInvocation';
+import { Message as AIMessage } from 'ai';
 
 interface MessageProps {
-  message: any;
+  message: AIMessage;
 }
 
 export const Message: React.FC<MessageProps> = ({ message }) => {
   return (
-    <>
+    <div
+      className={twMerge(
+        'mb-4 rounded-lg p-4',
+        message.role === 'user' ? 'bg-slate-600 rounded-br-0 self-end' : 'bg-blue-600 rounded-bl-0 self-start'
+      )}
+    >
+      <div className='sr-only'>
+        {message.role === 'user' ? 'The user said: ' : 'JARVIS responded: '}
+      </div>
       {message.content && (
-        <div
-          className={twMerge(
-            'mb-4 whitespace-pre-wrap rounded-lg bg-blue-600 p-4',
-            message.role === 'user' && 'bg-slate-600'
-          )}
-        >
-          <div className='flex items-start justify-between'>
-            <strong>{message.role === 'user' ? 'User: ' : 'JARVIS: '}</strong>
-          </div>
-          <div className='mt-2'>{message.content}</div>
-        </div>
+        <div className='whitespace-pre-wrap'>{message.content}</div>
       )}
       {message.toolInvocations && message.toolInvocations.length > 0 && (
-        <div className='mb-4'>
-          {message.toolInvocations.map(
-            (toolInvocation: any, index: number) => (
-              <ToolInvocation
-                key={index}
-                toolInvocation={toolInvocation}
-              />
-            )
-          )}
+        <div className='mt-4'>
+          {message.toolInvocations.map((toolInvocation, index) => (
+            <ToolInvocation key={index} toolInvocation={toolInvocation} />
+          ))}
         </div>
       )}
-    </>
+    </div>
   );
 };

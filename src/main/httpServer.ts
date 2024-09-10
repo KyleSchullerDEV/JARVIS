@@ -15,6 +15,12 @@ if (!process.env.OPENAI_API_KEY) {
   app.quit();
 }
 
+const tools = {
+  readFromFile,
+  writeToFile,
+  executeCommand,
+};
+
 export function createHttpServer(
   onServerStarted: (port: number) => void
 ): FastifyInstance {
@@ -39,7 +45,7 @@ export function createHttpServer(
         model: openai(process.env.OPENAI_API_MODEL || 'gpt-4o'),
         system: getSystemPrompt(),
         messages: convertToCoreMessages(messages),
-        tools: [readFromFile, writeToFile, executeCommand],
+        tools,
         maxToolRoundtrips: 20,
         experimental_toolCallStreaming: true,
         temperature: 0.7,
@@ -47,7 +53,17 @@ export function createHttpServer(
         attachments,
         onToolCall: async ({ toolCall }) => {
           try {
-            data.append({ type: 'toolCall', value: toolCall });
+            // Ensure the correct tool name is being used
+            const toolName = Object.keys(tools).find(
+              (key) => tools[key] === toolCall.tool
+            );
+            data.append({
+              type: 'toolCall',
+              value: {
+                ...toolCall,
+                toolName: toolName || toolCall.toolName,
+              },
+            });
           } catch (error) {
             console.error('Error in onToolCall:', error);
           }

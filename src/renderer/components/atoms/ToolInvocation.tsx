@@ -5,11 +5,13 @@ interface ToolInvocationProps {
   toolInvocation: ToolCall | ToolResult;
 }
 
-export const ToolInvocation: React.FC<ToolInvocationProps> = ({ toolInvocation }) => {
+export const ToolInvocation: React.FC<ToolInvocationProps> = ({
+  toolInvocation,
+}) => {
   const renderToolCall = (name: string, args: any) => (
     <div className='mb-2'>
       <strong>Action:</strong> {name}
-      <pre className='mt-1 rounded bg-gray-100 p-2 text-sm'>
+      <pre className='mt-1 whitespace-pre-wrap rounded bg-white/10 p-2 text-sm'>
         {JSON.stringify(args, null, 2)}
       </pre>
     </div>
@@ -18,7 +20,7 @@ export const ToolInvocation: React.FC<ToolInvocationProps> = ({ toolInvocation }
   const renderToolResult = (result: any) => (
     <div className='mb-2'>
       <strong>Result:</strong>
-      <pre className='mt-1 rounded bg-gray-100 p-2 text-sm'>
+      <pre className='mt-1 whitespace-pre-wrap rounded bg-white/10 p-2 text-sm'>
         {typeof result === 'string' ? result : JSON.stringify(result, null, 2)}
       </pre>
     </div>
