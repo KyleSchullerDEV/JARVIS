@@ -4,16 +4,6 @@ import { openai } from '@ai-sdk/openai';
 import { convertToCoreMessages, streamText, StreamData } from 'ai';
 import { getSystemPrompt } from './getSystemPrompt';
 import { readFromFile, writeToFile, executeCommand } from './tools';
-import path from 'path';
-import { app } from 'electron';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: path.join(__dirname, '../../.env') });
-
-if (!process.env.OPENAI_API_KEY) {
-  console.error('OPENAI_API_KEY is not set in the environment variables');
-  app.quit();
-}
 
 const tools = {
   readFromFile,
@@ -34,23 +24,21 @@ export function createHttpServer(
 
   fastify.post('/api/chat', async (request, reply) => {
     try {
-      const { messages, attachments } = request.body as {
+      const { messages } = request.body as {
         messages: any[];
-        attachments?: any[];
       };
 
       const data = new StreamData();
 
       const result = await streamText({
-        model: openai(process.env.OPENAI_API_MODEL || 'gpt-4o'),
+        model: openai(process.env.OPENAI_API_MODEL),
         system: getSystemPrompt(),
         messages: convertToCoreMessages(messages),
         tools,
-        maxToolRoundtrips: 20,
+        maxToolRoundtrips: parseInt(process.env.MAX_TOOL_ROUND_TRIPS),
         experimental_toolCallStreaming: true,
-        temperature: 0.7,
+        temperature: parseFloat(process.env.TEMPERATURE),
         maxRetries: 3,
-        attachments,
         onToolCall: async ({ toolCall }) => {
           try {
             // Ensure the correct tool name is being used

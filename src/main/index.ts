@@ -1,17 +1,21 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 import { createHttpServer } from './httpServer';
+import { initializeEnvVariables, updateEnvVariables, useSettingsStore } from './store';
+
+// Initialize environment variables
+initializeEnvVariables();
+
+let mainWindow: BrowserWindow | null = null;
+let httpServerPort: number | null = null;
 
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-let mainWindow: BrowserWindow | null = null;
-let httpServerPort: number | null = null;
-
 const createWindow = () => {
   mainWindow = new BrowserWindow({
-    width: 800,
+    width: 1000,
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -58,4 +62,14 @@ app.on('window-all-closed', () => {
 
 ipcMain.handle('get-http-server-url', () => {
   return httpServerPort ? `http://localhost:${httpServerPort}` : null;
+});
+
+ipcMain.handle('get-settings', () => {
+  return useSettingsStore.getState().getSettingsData();
+});
+
+ipcMain.handle('update-settings', (_, newSettings) => {
+  useSettingsStore.getState().updateSettingsData(newSettings);
+  updateEnvVariables();
+  return useSettingsStore.getState().getSettingsData();
 });

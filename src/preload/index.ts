@@ -10,4 +10,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
       ipcRenderer.removeListener('http-server-port', listener);
     };
   },
+  getSettings: () => ipcRenderer.invoke('get-settings'),
+  updateSettings: (settings: Partial<Settings>) => ipcRenderer.invoke('update-settings', settings),
 });

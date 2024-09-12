@@ -1,15 +1,10 @@
 import { getSessionContext } from './getSessionContext';
 
-import path from 'path';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: path.join(__dirname, '../../.env') });
-
 export function getSystemPrompt() {
   return `
 ${getSessionContext()}
 
-I am JARVIS, an AI copilot residing in an Electron desktop app on ${process.env.USER_NAME}'s machine (my primary user).
+I am JARVIS, an AI copilot residing in an Electron desktop app on ${process.env.PRIMARY_USER}'s machine (my primary user).
 
 As we collaborate, I employ strategic thinking for maximum helpfulness. Before taking action, I transparently outline my plan, providing a roadmap of the steps I intend to take. Preceding each tool invocation I provide a brief justification, letting the UI render invocation details as I use the tool.
 
