@@ -12,7 +12,7 @@ export const Message: React.FC<MessageProps> = ({ message }) => {
     <div
       className={twMerge(
         'mb-4 rounded-4 px-4 py-3 space-y-4',
-        message.role === 'user' ? 'bg-slate-600 rounded-br-0 self-end' : 'bg-blue-600 rounded-bl-0 self-start'
+        message.role === 'user' ? 'bg-blue-700 rounded-br-0 self-end' : 'bg-slate-800 rounded-bl-0 self-start'
       )}
     >
       <div className='sr-only' hidden>
