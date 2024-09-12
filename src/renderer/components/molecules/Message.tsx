@@ -8,7 +8,6 @@ interface MessageProps {
 }
 
 export const Message: React.FC<MessageProps> = ({ message }) => {
-  console.log('Message:', message);
   return (
     <div
       className={twMerge(

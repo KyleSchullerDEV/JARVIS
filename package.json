@@ -53,6 +53,7 @@
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slider": "^1.2.0",
+    "@radix-ui/react-slot": "^1.1.0",
     "ai": "^3.3.29",
     "dotenv": "^16.4.5",
     "electron-squirrel-startup": "^1.0.1",

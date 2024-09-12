@@ -9,6 +9,7 @@ import {
   Gear,
 } from '@phosphor-icons/react';
 
+import Button from '../atoms/Button';
 import { Message } from '../molecules/Message';
 import { SettingsDialog } from './SettingsDialog';
 
@@ -122,39 +123,37 @@ function Chat() {
         onSubmit={handleSubmit}
         className='mx-4 mb-4 grid gap-2 [grid-template-columns:min-content_1fr_min-content]'
       >
-        <button
-          type='button'
-          onClick={() => setIsSettingsOpen(true)}
-          className='grid aspect-square place-content-center rounded-3 bg-gray-500 p-3 text-white'
-        >
-          <Gear weight='bold' className='text-[1.25em]' />{' '}
-          <span className='sr-only'>Settings</span>
-        </button>
         <input
-          className='flex-grow rounded-3 bg-white/10 px-4 py-3'
+          className='col-start-2 row-start-1 flex-grow rounded-3 border border-slate-700 bg-transparent px-4 py-3 hover:border-slate-500 focus:border-slate-50 focus:outline-none'
           value={input}
           placeholder='Message&hellip;'
           onChange={handleInputChange}
           disabled={isLoading}
         />
         {isLoading ?
-          <button
-            type='button'
+          <Button
             onClick={stop}
-            className='grid aspect-square place-content-center rounded-3 bg-red-500 p-3 text-white'
+            className='grid aspect-square place-content-center bg-red-500 p-3 text-white'
           >
             <Stop weight='bold' className='text-[1.25em]' />{' '}
             <span className='sr-only'>Stop</span>
-          </button>
-        : <button
+          </Button>
+        : <Button
             type='submit'
-            className='grid aspect-square place-content-center rounded-3 bg-blue-500 p-3 text-white disabled:bg-blue-300'
+            className='grid aspect-square place-content-center bg-blue-700 p-3 text-white'
             disabled={isLoading}
           >
             <PaperPlaneTilt weight='bold' className='text-[1.25em]' />{' '}
             <span className='sr-only'>Send</span>
-          </button>
+          </Button>
         }
+        <Button
+          onClick={() => setIsSettingsOpen(true)}
+          className='col-start-1 row-start-1 grid aspect-square place-content-center bg-slate-700 p-3 text-white'
+        >
+          <Gear weight='bold' className='text-[1.25em]' />{' '}
+          <span className='sr-only'>Settings</span>
+        </Button>
       </form>
       {/*
       {latestMetadata ?

@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
+
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Label from '@radix-ui/react-label';
 import * as Select from '@radix-ui/react-select';
 import * as Slider from '@radix-ui/react-slider';
+
 import { CaretDown, CaretUp, X } from '@phosphor-icons/react';
+
+import Button from '../atoms/Button';
 
 import { twMerge } from 'tailwind-merge';
 
@@ -35,9 +39,9 @@ const defaultStyles = {
   slider: {
     root: 'relative flex h-6 w-full touch-none select-none items-center',
     track: 'cursor-ew-resize relative h-2 grow rounded-full bg-slate-700',
-    range: 'cursor-ew-resize absolute h-full rounded-full bg-slate-50',
+    range: 'cursor-ew-resize absolute h-full rounded-full bg-blue-700',
     thumb:
-      'block h-6 w-6 cursor-grab active:cursor-grabbing rounded-full bg-slate-700 focus:outline-none focus:bg-slate-50 hover:bg-slate-500',
+      'block h-6 w-6 cursor-grab active:cursor-grabbing rounded-full bg-slate-500 focus:outline outline-slate-50 outline-offset-4 focus:bg-slate-50 hover:bg-slate-50',
   },
 };
 
@@ -219,21 +223,21 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
               </Slider.Root>
             </fieldset>
 
-            <div className='flex justify-end'>
+            <div className='flex gap-4 justify-end'>
               <Dialog.Close asChild>
-                <button
+                <Button
                   type='button'
-                  className='mr-2 rounded-3 bg-slate-700 px-4 py-2'
+                  className='bg-slate-700'
                 >
                   Cancel
-                </button>
+                </Button>
               </Dialog.Close>
-              <button
+              <Button
                 type='submit'
-                className='rounded-3 bg-blue-500 px-4 py-2 text-white'
+                className='bg-blue-700'
               >
                 Save
-              </button>
+              </Button>
             </div>
           </form>
           <Dialog.Close asChild>
